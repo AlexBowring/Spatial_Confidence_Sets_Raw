@@ -1,9 +1,9 @@
 nSubj=120;
 nRlz=5;
 
-cd /storage/maullz/Contour_Inference_2018/
-addpath('/storage/essicd/spm8/')
-addpath(genpath('/storage/maullz/Contour_Inference_2018/'))
+cd ../
+addpath('/SPM8_PATH/')
+addpath(genpath('../.'))
 
 rng('shuffle')
 tID=str2num(getenv('SGE_TASK_ID'))

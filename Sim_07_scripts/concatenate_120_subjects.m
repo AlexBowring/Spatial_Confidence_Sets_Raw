@@ -1,7 +1,7 @@
 function ConcatenateSims
 Sim = 'Sim_07'; 
 Nfiles = 600; 
-Base = sprintf(['/storage/maullz/Contour_Inference_2018/', Sim, '_results/120_subjects']);
+Base = sprintf(['../', Sim, '_results/120_subjects']);
 
 cd(Base)
 
