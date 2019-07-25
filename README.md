@@ -1,5 +1,5 @@
 # Spatial Confidence Sets for Raw Effect Size Images
-Supporting code to perform the analyses and create the figures of the manuscript with the same title available at [https://doi.org/10.1101/631473](https://doi.org/10.1101/631473).
+Supporting code to perform the simulations and analyses of the manuscript with the same title available at [https://doi.org/10.1101/631473](https://doi.org/10.1101/631473).
 
 ## Table of contents
    * [How to cite](#how-to-cite)
