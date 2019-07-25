@@ -5,19 +5,19 @@ Supporting code to perform the analyses and create the figures of the manuscript
    * [How to cite](#how-to-cite)
    * [Dependencies](#dependencies)
    * [Simulations](#simulations)
-      * [Sim_01](#sim-01)
-      * [Sim_02](#sim-02)
-      * [Sim_03](#sim-03)
-      * [Sim_04](#sim-04)
-      * [Sim_05](#sim-05)
-      * [Sim_06](#sim-06)
-      * [Sim_07](#sim-07)
-      * [Sim_08](#sim-08)
-      * [Sim_09](#sim-09)
-      * [Sim_10](#sim-10)
-      * [Sim_11](#sim-11)
-      * [Sim_12](#sim-12)
-      * [Sim_13](#sim-13)
+      * [Sim_01](#sim_01)
+      * [Sim_02](#sim_02)
+      * [Sim_03](#sim_03)
+      * [Sim_04](#sim_04)
+      * [Sim_05](#sim_05)
+      * [Sim_06](#sim_06)
+      * [Sim_07](#sim_07)
+      * [Sim_08](#sim_08)
+      * [Sim_09](#sim_09)
+      * [Sim_10](#sim_10)
+      * [Sim_11](#sim_11)
+      * [Sim_12](#sim_12)
+      * [Sim_13](#sim_13)
    * [HCP Analyses](#hcp-analyses)
 
 ## How to cite
@@ -78,4 +78,4 @@ The `Sim_12_scripts` directory contains the code for the 2D Circle signal simula
 The `Sim_13_scripts` directory contains the code for the 2D Large Sphere signal simulations with the gaussian wild bootstrap, corresponding with the gaussian wild bootstrap results in Figure 6.2 of the manuscript.
 
 ## HCP Analyses
-The `HCP_analysis_scripts` direction contains the code used to analyse the HCP data. The `HCP_contour_inf.m` file contains the code used to obtain the confidence sets (and yellow point estimate set) for the HCP data displayed in Figure 9 and Figure 10 of the manuscript. The `permutation_test.m` file is the SPM12 script used to apply the traditional inference procedure corresponding to the results in the supplementary figures for the manuscript. 
+The `HCP_analysis_scripts` direction contains the code used to analyse the HCP data. The `HCP_contour_inf.m` file contains the code used to obtain the confidence sets (and yellow point estimate set) for the HCP data displayed in Figure 9 and Figure 10 of the manuscript. The `permutation_test.m` file is the `SPM12` script used to apply the traditional inference procedure corresponding to the results in the supplementary figures for the manuscript. 
