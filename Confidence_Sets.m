@@ -5,7 +5,7 @@ function [] = Confidence_Sets(4D_COPES, GROUP_MASK_IMAGE, THRESH, OUT)
 %   4D_COPES:         A 4D volume containing all individuals (3D) effect estimates (%BOLD) images. 
 %   GROUP_MASK_IMAGE: A 3D image of the group mask
 %   THRESH:           The threshold c, in raw change units, mu. 
-%   Out:              Output directory where all output images are saved
+%   OUT:              Output directory where all output images are saved
 %
 % Outputs:
 %   - Lower_CS.nii        Lower Confidence Set image. All voxels in this image we can assert have an effect size less than c.
@@ -18,7 +18,6 @@ function [] = Confidence_Sets(4D_COPES, GROUP_MASK_IMAGE, THRESH, OUT)
 %   - sd.nii              The standard deviation of the effect size images. 
 
 tic
-cd(String);
 [x,y,z] = ndgrid(-1:1);
 se = strel('arbitrary',sqrt(x.^2 + y.^2 + z.^2) <=1);
 
