@@ -19,7 +19,7 @@ Supporting code to perform the simulations and analyses of the manuscript with t
       * [Sim_12](#sim_12)
       * [Sim_13](#sim_13)
    * [HCP Analyses](#hcp-analyses)
-   * [Analyse Your Own Data](#analyses-your-own-data)
+   * [Analyse Your Own Data](#analyse-your-own-data)
 
 ## How to cite
 
