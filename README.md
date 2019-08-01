@@ -19,6 +19,7 @@ Supporting code to perform the simulations and analyses of the manuscript with t
       * [Sim_12](#sim_12)
       * [Sim_13](#sim_13)
    * [HCP Analyses](#hcp-analyses)
+   * [Analyse Your Own Data](#analyses-your-own-data)
 
 ## How to cite
 
@@ -78,4 +79,9 @@ The `Sim_12_scripts` directory contains the code for the 2D Circle signal simula
 The `Sim_13_scripts` directory contains the code for the 2D Large Sphere signal simulations with the gaussian wild bootstrap, corresponding with the gaussian wild bootstrap results in Figure 6.2 of the manuscript.
 
 ## HCP Analyses
-The `HCP_analysis_scripts` direction contains the code used to analyse the HCP data. The `HCP_contour_inf.m` file contains the code used to obtain the confidence sets (and yellow point estimate set) for the HCP data displayed in Figure 9 and Figure 10 of the manuscript. The `permutation_test.m` file is the `SPM12` script used to apply the traditional inference procedure corresponding to the results in the supplementary figures for the manuscript. 
+The `HCP_analysis_scripts` directory contains the code used to analyse the HCP data. The `HCP_contour_inf.m` file contains the code used to obtain the confidence sets (and yellow point estimate set) for the HCP data displayed in Figure 9 and Figure 10 of the manuscript. The `permutation_test.m` file is the `SPM12` script used to apply the traditional inference procedure corresponding to the results in the supplementary figures for the manuscript. 
+
+## Analyse Your Own Data
+The `Confidence_Sets.m` function contains code to obtain Confidence Sets on your own data. The function has 4 inputs: `4D_COPES`, a 4D volume containing the (subject-level) effect estimate images which you would like to obtain confidence sets for. Individual effect estimate images can be concatenated into a 4D image using the `fslmerge` command-line tool that comes with `FSL`:
+`fslmerge -t 4D_FILENAME EFFECT_ESTIMATE_IMAGE_1 EFFECT_ESTIMATE_IMAGE_2 ... EFFECT_ESTIMATE_IMAGE_N`.
+`GROUP_MASK_IMAGE` is the group mask. `THRESH` is the threshold c in raw change units. `OUT` is the output directory where the CS images are saved.  

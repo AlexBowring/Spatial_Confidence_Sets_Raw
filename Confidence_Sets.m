@@ -1,15 +1,33 @@
-function [] = HCP_Contour_Inf(String,Out)
+function [] = Confidence_Sets(4D_COPES, GROUP_MASK_IMAGE, THRESH, OUT)
+
+% Computes Confidence Sets and point estimate (yellow) image for subject-level effect estimates maps.  
+% Inputs:
+%   4D_COPES:         A 4D volume containing all individuals (3D) effect estimates (%BOLD) images. 
+%   GROUP_MASK_IMAGE: A 3D image of the group mask
+%   THRESH:           The threshold c, in raw change units, mu. 
+%   Out:              Output directory where all output images are saved
+%
+% Outputs:
+%   - Lower_CS.nii        Lower Confidence Set image. All voxels in this image we can assert have an effect size less than c.
+%                         In the manuscript, this image was displayed in blue. 
+%   - Upper_CS.nii        Upper Confidence Set image. All voxels in this image we can assert have an effect size greater than c.
+%                         In the manuscript, this image was displayed in red.
+%   - Point_Estimate.nii  Point Estimate Set image. The best guess from the data whre there is an effect size greater than c.
+%                         In the manuscript, this image was displayed in yellow.
+%   - mean.nii            The sample mean of the effect size images.
+%   - sd.nii              The standard deviation of the effect size images. 
+
 tic
 cd(String);
 [x,y,z] = ndgrid(-1:1);
 se = strel('arbitrary',sqrt(x.^2 + y.^2 + z.^2) <=1);
 
-thr   = 10.0;  % In raw change units, mu
+thr   = THRESH;  % In raw change units, mu
 nBoot = 5000;
 
-VY=spm_vol('smooth_copes.nii.gz');      % This is the file "handle" for all input
+VY=spm_vol(4D_COPES);      % This is the file "handle" for all input
                                  % images  - Ignore gzip warning
-VM=spm_vol('group_mask.nii.gz'); % This is the handle for the mask
+VM=spm_vol(GROUP_MASK_IMAGE); % This is the handle for the mask
 
 Mask=spm_read_vols(VM)>0;
 
@@ -104,22 +122,6 @@ for i=1:nSubj
 end
 toc
 
-
-tic
-for i=1:nSubj
-  subject_resid_field = cohen_d_resid(:,:,:,i);
-
-  cohen_d_lshift_boundary_values = cohen_d_lshift_w1.*subject_resid_field(cohen_d_lshift) + cohen_d_lshift_w2.*subject_resid_field(cohen_d_lshift(:,[dim(2) 1:dim(2)-1],:));
-  cohen_d_rshift_boundary_values = cohen_d_rshift_w1.*subject_resid_field(cohen_d_rshift) + cohen_d_rshift_w2.*subject_resid_field(cohen_d_rshift(:,[2:dim(2) 1],:));
-  cohen_d_ushift_boundary_values = cohen_d_ushift_w1.*subject_resid_field(cohen_d_ushift) + cohen_d_ushift_w2.*subject_resid_field(cohen_d_ushift([dim(1) 1:dim(1)-1],:,:));
-  cohen_d_dshift_boundary_values = cohen_d_dshift_w1.*subject_resid_field(cohen_d_dshift) + cohen_d_dshift_w2.*subject_resid_field(cohen_d_dshift([2:dim(1) 1],:,:));
-  cohen_d_bshift_boundary_values = cohen_d_bshift_w1.*subject_resid_field(cohen_d_bshift) + cohen_d_bshift_w2.*subject_resid_field(cohen_d_bshift(:,:,[dim(3) 1:dim(3)-1]));
-  cohen_d_fshift_boundary_values = cohen_d_fshift_w1.*subject_resid_field(cohen_d_fshift) + cohen_d_fshift_w2.*subject_resid_field(cohen_d_fshift(:,:,[2:dim(3) 1]));
-
-  cohen_d_resid_boundary_values(:,i) = [cohen_d_lshift_boundary_values; cohen_d_rshift_boundary_values; cohen_d_ushift_boundary_values; cohen_d_dshift_boundary_values; cohen_d_bshift_boundary_values; cohen_d_fshift_boundary_values];
-end
-toc
-
 % Implementing the Multiplier Boostrap to obtain confidence intervals
 tic
 for k=1:nBoot 
@@ -165,39 +167,39 @@ imagesc(MiddleCon(:,:,40));axis image; colorbar
 subplot(2,3,6)
 imagesc(UpperCon(:,:,40));axis image; colorbar
 
-cd(Out);
+cd(OUT);
 Vout=VY(1); % clone the first image's handle
-Vout.fname = 'smooth_LowerConfidenceInterval_c1000.nii'; % crucially, change the file name!
-Vout.descrip = 'Lower confidence interval!'; % Actually, put something more
+Vout.fname = 'Lower_CS.nii'; % crucially, change the file name!
+Vout.descrip = 'Lower Confidence Set. All voxels in this set we can assert have an effect size less than c.'; % Actually, put something more
                                         % informative here
 
 Vout=spm_write_vol(Vout,LowerCon);
 
 Vout=VY(1); % clone the first image's handle
-Vout.fname = 'smooth_MiddleConfidenceInterval_c1000.nii'; % crucially, change the file name!
-Vout.descrip = 'Middle confidence interval!'; % Actually, put something more
+Vout.fname = 'Point_Estimate.nii'; % crucially, change the file name!
+Vout.descrip = 'The Point Estimate Set. The best guess from the data of voxels with an effect size greater than c.'; % Actually, put something more
                                         % informative here
 
 Vout=spm_write_vol(Vout,MiddleCon);
 
 Vout=VY(1); % clone the first image's handle
-Vout.fname = 'smooth_UpperConfidenceInterval_c1000.nii'; % crucially, change the file name!
-Vout.descrip = 'Upper confidence interval!'; % Actually, put something more
+Vout.fname = 'Upper_CS.nii'; % crucially, change the file name!
+Vout.descrip = 'Upper Confidence Set. All voxels in this set we can assert have an effect size greater than c.'; % Actually, put something more
                                         % informative here
 
 Vout=spm_write_vol(Vout,UpperCon);
 
 % Saving mean, SD and cohen's d image
 Vout=VY(1); % clone the first image's handle
-Vout.fname = 'smooth_mean.nii'; % crucially, change the file name!
-Vout.descrip = 'Sample mean'; % Actually, put something more
+Vout.fname = 'mean.nii'; % crucially, change the file name!
+Vout.descrip = 'Sample mean of effect estimate images'; % Actually, put something more
                                         % informative here
 
 Vout=spm_write_vol(Vout,observed_mean);
 
 Vout=VY(1); % clone the first image's handle
-Vout.fname = 'smooth_sd.nii'; % crucially, change the file name!
-Vout.descrip = 'Standard deviation'; % Actually, put something more
+Vout.fname = 'sd.nii'; % crucially, change the file name!
+Vout.descrip = 'Standard deviation of effect estimate images'; % Actually, put something more
                                         % informative here
 
 Vout=spm_write_vol(Vout,observed_std);
