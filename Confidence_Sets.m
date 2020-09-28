@@ -109,7 +109,8 @@ observed_resid_boundary_values = zeros([size(observed_lshift_w1,1)+size(observed
 tic
 for i=1:nSubj
   subject_resid_field = reshape(resid(:,i), [dim 1]);
-
+  subject_resid_field(~Mask) = NaN; 
+  
   observed_lshift_boundary_values = observed_lshift_w1.*subject_resid_field(observed_lshift) + observed_lshift_w2.*subject_resid_field(observed_lshift(:,[dim(2) 1:dim(2)-1],:));
   observed_rshift_boundary_values = observed_rshift_w1.*subject_resid_field(observed_rshift) + observed_rshift_w2.*subject_resid_field(observed_rshift(:,[2:dim(2) 1],:));
   observed_ushift_boundary_values = observed_ushift_w1.*subject_resid_field(observed_ushift) + observed_ushift_w2.*subject_resid_field(observed_ushift([dim(1) 1:dim(1)-1],:,:));
@@ -120,6 +121,8 @@ for i=1:nSubj
   observed_resid_boundary_values(:,i) = [observed_lshift_boundary_values; observed_rshift_boundary_values; observed_ushift_boundary_values; observed_dshift_boundary_values; observed_bshift_boundary_values; observed_fshift_boundary_values];
 end
 toc
+
+observed_resid_boundary_values(any(isnan(observed_resid_boundary_values), 2), :) = [];
 
 % Implementing the Multiplier Boostrap to obtain confidence intervals
 tic
